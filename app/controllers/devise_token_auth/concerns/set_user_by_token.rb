@@ -136,7 +136,7 @@ module DeviseTokenAuth::Concerns::SetUserByToken
       @resource.with_lock do
         # should not append auth header if @resource related token was
         # cleared by sign out in the meantime
-        return if @used_auth_by_token && @resource.tokens[@client_id].nil?
+        return if (signed_in? || @used_auth_by_token) && @resource.tokens[@client_id].nil?
 
         # update the response header
         response.headers.merge!(auth_header_from_batch_request)
